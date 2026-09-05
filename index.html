@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presente Especial 🎁</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            color: white;
+        }
+        
+        .gift-box {
+            font-size: 100px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+        
+        .gift-box:hover { transform: scale(1.1); }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .text {
+            margin-top: 20px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* SCREAMER OVERLAY */
+        #screamer {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+        }
+        
+        #screamer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* TELA TREMENDO */
+        .shake {
+            animation: shake 0.1s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        .flashing {
+            animation: flash 0.1s infinite;
+        }
+        
+        @keyframes flash {
+            0%, 100% { background: #fff; }
+            50% { background: #ff0000; }
+        }
+        
+        /* Mensagem final */
+        .reveal {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            color: #333;
+            font-size: 18px;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA INICIAL (ISCA) -->
+    <div class="container" id="landing">
+        <div class="gift-box" onclick="startScare()">🎁</div>
+        <p class="text">Clique para abrir seu presente!</p>
+    </div>
+
+    <!-- SCREAMER -->
+    <div id="screamer">
+        <!-- Substitua o VIDEO_ID pelo ID do vídeo de susto do YouTube -->
+        <iframe id="ytplayer" 
+                src="" 
+                allow="autoplay; fullscreen">
+        </iframe>
+    </div>
+
+    <!-- MENSAGEM REVELAÇÃO -->
+    <div class="reveal" id="reveal">
+        😘 É brincadeira, amor! Te amo! ❤️
+        <br><small>(diminui o volume agora kkk)</small>
+    </div>
+
+    <script>
+        function startScare() {
+            const screamer = document.getElementById('screamer');
+            const player = document.getElementById('ytplayer');
+            const body = document.body;
+            const reveal = document.getElementById('reveal');
+            
+            // Esconde tela inicial
+            document.getElementById('landing').style.display = 'none';
+            
+            // Mostra screamer
+            screamer.style.display = 'block';
+            screamer.classList.add('flashing');
+            body.classList.add('shake');
+            
+            // Vídeo de susto do YouTube (autoplay + start no início do susto)
+            // Exemplo: vídeo de screamer famoso - substitua pelo ID que quiser
+            const videoId = 'dQw4w9WgXcQ'; // <-- TROQUE PELO ID DO VÍDEO DE SUSTO
+            
+            // Força volume máximo (limitado pelo navegador, mas tenta)
+            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&start=0&volume=100`;
+            
+            // Aumenta volume do sistema (tentativa)
+            try {
+                const audio = new Audio();
+                audio.volume = 1.0;
+            } catch(e) {}
+            
+            // Para tudo após 8 segundos e mostra mensagem
+            setTimeout(() => {
+                screamer.classList.remove('flashing');
+                body.classList.remove('shake');
+                reveal.style.display = 'block';
+                
+                // Para o vídeo
+                player.src = '';
+            }, 8000);
+        }
+        
+        // Previne fechar a aba facilmente (opcional, meio maligno kkk)
+        window.onbeforeunload = function() {
+            return "Tem certeza?";
+        };
+    </script>
+
+</body>
+</html>
